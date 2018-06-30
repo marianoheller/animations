@@ -15,9 +15,9 @@ const SvgWrapper = styled.div`
 `;
 
 const range = n => Array.from(Array(n), (d, i) => i);
-const numLayers = 20;
+const numLayers = 10;
 const samplesPerLayer = 25;
-const bumpsPerLayer = 10;
+const bumpsPerLayer = 20;
 
 const keys = range(numLayers);
 
