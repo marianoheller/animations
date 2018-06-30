@@ -5,6 +5,7 @@ module.exports = {
   },
   "rules": {
     "max-len": ["error", { "code": 120, "tabWidth": 2, "ignoreComments": true }],
+    "no-plusplus": "off",
     "no-underscore-dangle": "off",
     "react/no-array-index-key": "off",
     "jsx-a11y/label-has-for": "off",
