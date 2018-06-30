@@ -9,9 +9,10 @@ import { PatternCircles, PatternWaves } from '@vx/pattern';
 import { scaleLinear, scaleOrdinal } from '@vx/scale';
 
 const SvgWrapper = styled.div`
-  width: '100%';
-  height: '100%';
-  cursor: 'pointer';
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background-color: #ffe1ff;
 `;
 
 const range = n => Array.from(Array(n), (d, i) => i);
