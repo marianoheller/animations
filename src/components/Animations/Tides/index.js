@@ -24,6 +24,7 @@ const Svg = styled.svg`
   bottom: 0;
 `;
 
+/* eslint-disable-next-line */
 const Graph = ({ interpolate, data, xScale, yScale }) => (
   <AreaClosed
     data={data.map((d, i) => ({ ...d, value: interpolate[i] }))}
@@ -32,11 +33,11 @@ const Graph = ({ interpolate, data, xScale, yScale }) => (
     x={x}
     y={y}
     strokeWidth={2}
-    stroke={'url(#PinkRed)'}
-    fill={'url(#PinkRed)'}
+    stroke="url(#PinkRed)"
+    fill="url(#PinkRed)"
     curve={curveBasis}
   />
-)
+);
 
 export default class Tides extends Component {
   constructor() {
@@ -54,7 +55,7 @@ export default class Tides extends Component {
       <ParentSize>
         {({ width, height }) => {
           const yMax = max(data, y);
-          const yScale = scaleLinear({ range: [height, height/2], domain: [0, yMax], nice: true });
+          const yScale = scaleLinear({ range: [height, height / 2], domain: [0, yMax], nice: true });
           const xScale = scaleTime({ range: [0, width], domain: extent(data, x) });
           const interpolate = data.map(() => Math.random() * yMax);
           const extra = { data, xScale, yScale };
@@ -63,15 +64,17 @@ export default class Tides extends Component {
               <Svg width={width} height={height}>
                 <GradientPinkRed id="PinkRed" />
                 <GradientTealBlue id="TealBlue" />
-                <rect width={width} height={height} fill={'url(#TealBlue)'} />
+                <rect width={width} height={height} fill="url(#TealBlue)" />
                 <g>
-                  <Spring to={{ interpolate }} {...extra} children={Graph} />
+                  <Spring to={{ interpolate }} {...extra}>
+                    {springProps => <Graph {...springProps} />}
+                  </Spring>
                 </g>
               </Svg>
             </SvgWrapper>
-          )
+          );
         }}
       </ParentSize>
-    )
+    );
   }
 }
