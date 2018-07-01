@@ -4,6 +4,7 @@ module.exports = {
       "browser": true
   },
   "rules": {
+    "no-await-in-loop": "off",
     "max-len": ["error", { "code": 120, "tabWidth": 2, "ignoreComments": true }],
     "no-plusplus": "off",
     "no-underscore-dangle": "off",

@@ -2,6 +2,7 @@ import Tides from './components/Animations/Tides';
 import Vickatint from './components/Animations/Vickatint';
 import Patterns from './components/Animations/Patterns';
 import Interpolate from './components/Animations/Interpolate';
+import Trail from './components/Animations/Trail';
 
 const routes = [
   {
@@ -21,6 +22,12 @@ const routes = [
     title: 'Interpolate',
     color: '#ffff76',
     component: Interpolate,
+  },
+  {
+    path: '/trail',
+    title: 'Trail',
+    color: '#ffff76',
+    component: Trail,
   },
   {
     path: '/patterns',
