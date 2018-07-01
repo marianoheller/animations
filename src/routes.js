@@ -3,6 +3,7 @@ import Vickatint from './components/Animations/Vickatint';
 import Patterns from './components/Animations/Patterns';
 import Interpolate from './components/Animations/Interpolate';
 import Trail from './components/Animations/Trail';
+import Bounce from './components/Animations/Bounce';
 
 const routes = [
   {
@@ -28,6 +29,12 @@ const routes = [
     title: 'Trail',
     color: '#ffff76',
     component: Trail,
+  },
+  {
+    path: '/bounce',
+    title: 'Bounce',
+    color: '#ffff76',
+    component: Bounce,
   },
   {
     path: '/patterns',
