@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/vickatint',
     title: 'Vickatint',
-    color: '#059c50',
+    color: '#8e03ff',
     component: Vickatint,
   },
   {
@@ -25,7 +25,7 @@ const routes = [
   {
     path: '/patterns',
     title: 'Patterns',
-    color: '#933EC5',
+    color: '#933EC5', // ff9861
     component: Patterns,
   },
 ];
