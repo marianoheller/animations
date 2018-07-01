@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import ReactSVG from 'react-svg';
 
-import leftArrow from './leftArrow.svg';
-import rightArrow from './rightArrow.svg';
-
-const __Arrow = styled.img`
+const __Arrow = styled(ReactSVG)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,6 +16,14 @@ const __Arrow = styled.img`
   height: 4rem;
   user-select: none;
 
+  & svg {
+    width: 4rem;
+    height: 4rem;
+  }
+  & svg path {
+    fill: ${({ color }) => color};
+  }
+
   &:hover {
     transform: translateY(-50%) scale(1.25);
     top: 50%;
@@ -26,6 +32,9 @@ const __Arrow = styled.img`
 
 const LeftArrow = __Arrow.extend`
   left: 0;
+  & > #leftArrow {
+    fill: "#FFFFFF";
+  }
 `;
 
 const RightArrow = __Arrow.extend`
@@ -33,10 +42,12 @@ const RightArrow = __Arrow.extend`
 `;
 
 
-const ArrowScroll = ({ increase, decrease }) => (
+const ArrowScroll = ({ color, increase, decrease }) => (
   <React.Fragment>
-    <LeftArrow src={leftArrow} alt="leftArrow" onClick={decrease} />
-    <RightArrow src={rightArrow} alt="rightArrow" onClick={increase} />
+    <LeftArrow path="./img/leftArrow.svg" onClick={decrease} color={color} />
+    <RightArrow path="./img/rightArrow.svg" onClick={increase} color={color} />
+    {/* <LeftArrow color={color} src={leftArrow} alt="leftArrow" onClick={decrease} />
+    <RightArrow color={color} src={rightArrow} alt="rightArrow" onClick={increase} /> */}
   </React.Fragment>
 );
 
@@ -44,11 +55,13 @@ const ArrowScroll = ({ increase, decrease }) => (
 ArrowScroll.propTypes = {
   increase: PropTypes.func,
   decrease: PropTypes.func,
+  color: PropTypes.string,
 };
 
 ArrowScroll.defaultProps = {
   increase: () => {},
   decrease: () => {},
+  color: '#000000',
 };
 
 export default ArrowScroll;

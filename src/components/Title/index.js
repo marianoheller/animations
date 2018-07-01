@@ -12,11 +12,12 @@ const TitleWrapper = styled.div`
   top: 0.5rem;
   left: 50%;
   transform: translateX(-50%);
+  color: ${({ color }) => color};
 `;
 
-export default function Title({ title }) {
+export default function Title({ title, color }) {
   return (
-    <TitleWrapper>
+    <TitleWrapper color={color}>
       {title}
     </TitleWrapper>
   );
@@ -24,8 +25,10 @@ export default function Title({ title }) {
 
 Title.propTypes = {
   title: PropTypes.string,
+  color: PropTypes.string,
 };
 
 Title.defaultProps = {
   title: '',
+  color: '#000000',
 };

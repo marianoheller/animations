@@ -11,12 +11,14 @@
     "@vx/scale": "^0.0.165",
     "@vx/shape": "^0.0.168",
     "d3-array": "^1.2.1",
+    "flubber": "^0.4.2",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
     "react-spring": "^5.3.18",
+    "react-svg": "^4.1.1",
     "styled-components": "^3.3.3"
   },
   "scripts": {

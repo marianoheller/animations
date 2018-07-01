@@ -42,8 +42,8 @@ class App extends React.Component {
     const { routeIndex } = this.state;
     return (
       <AppWrapper>
-        <Title title={routes[routeIndex].title} />
-        <ArrowScroll increase={this.changeRoute(1)} decrease={this.changeRoute(-1)} />
+        <Title color={routes[routeIndex].color} title={routes[routeIndex].title} />
+        <ArrowScroll color={routes[routeIndex].color} increase={this.changeRoute(1)} decrease={this.changeRoute(-1)} />
         <Switch>
           {routes.map(routeConfig => <Route key={routeConfig.path} {...routeConfig} />)}
           <Route render={() => <Redirect to={routes[0].path} />} />
