@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Spring, animated } from 'react-spring';
 import { ParentSize } from '@vx/responsive';
+import { Keyframes, animated } from 'react-spring';
+import { TimingAnimation, Easing } from 'react-spring/dist/addons.cjs';
 
 
 const Container = styled.div`
@@ -16,68 +17,63 @@ const SvgWrapper = styled.div`
 `;
 
 
+const animations = {
+  bringTop: { to: { ballHeight: 0, ry: 50, rx: 50 } },
+  drop: {
+    from: { ballHeight: 0, ry: 50, rx: 50 },
+    to: { ballHeight: 300, ry: 45, rx: 55 },
+  }
+};
+
+const Container = Keyframes.Spring(animations);
+
 /* eslint-disable-next-line */
-const Ball = ({ rx, ry, height }) => {
-  return (
-    <ellipse
+const Ball = ({ ballHeight, rx, ry, height, width }) => (
+  <svg height={height} width={width}>
+    <animated.ellipse
       cx="200"
       cy="200"
       rx={rx}
       ry={ry}
-      fill="black"
-      stroke="black"
+      fill="#247BA0"
+      stroke="#247BA0"
       strokeWidth="2px"
       style={{
         willChange: 'transform',
-        transform: `translate3d(0, ${height}px, 0)`,
+        transform: ballHeight.interpolate(bH => `translate3d(0, ${bH}px, 0)`)
       }}
     />
-  );
-};
-
+  </svg>
+)
 
 class Bounce extends React.PureComponent {
   constructor() {
     super();
     this.state = {
-      toggle: false,
+      aState: "drop",
     };
-
     this.toggle = this.toggle.bind(this);
   }
 
   toggle() {
-    this.setState({ toggle: !this.state.toggle });
+    const { aState } = this.state;
+    const possibleStates = [ 'bringToTop', 'drop'];
+    const currentIndex = possibleStates.findIndex(p => p === aState);
+    this.setState({ aState: (currentIndex + 1) % possibleStates });
   }
 
   render() {
-    const { toggle } = this.state;
-    /* const paths = Object.values(pathsRefs);
-    const interpolator = interpolate(paths[index], paths[index + 1] || paths[0], { maxSegmentLength: 0.1 }); */
+    const { aState } = this.state;
     return (
-      <Container>
-        <ParentSize>
-          {({ width, height }) => (
-            <SvgWrapper onClick={this.toggle}>
-              <animated.svg width={width} height={height} stroke="none" strokeOpacity={0}>
-                <g>
-                  <Spring
-                    from={{ rx: 100, ry: 100 }}
-                    to={{
-                      rx: toggle ? 100 : 120,
-                      ry: toggle ? 100 : 75,
-                      height: toggle ? 0 : 100,
-                    }}
-                    onRest={this.toggle}
-                  >
-                    {springProps => <Ball {...springProps} />}
-                  </Spring>
-                </g>
-              </animated.svg>
-            </SvgWrapper>
+      <StyledContainer onClick={this.toggle}>
+        <ParentSize >
+          {sizeProps => (
+            <Container state={aState} reset native impl={TimingAnimation} config={{ duration: 2500, easing: Easing.bounce }}>
+              {keyframesProps => <Ball {...sizeProps} {...keyframesProps} />}
+            </Container>
           )}
         </ParentSize>
-      </Container>
+      </StyledContainer>
     );
   }
 }
