@@ -1,49 +1,49 @@
 /* eslint-disable no-shadow */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import styled from 'styled-components';
-import { Keyframes, animated, config } from 'react-spring';
-import { Avatar, Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Keyframes, Transition, animated, config } from 'react-spring';
 import delay from 'delay';
+
+import * as SC from './StyledComponents';
 
 config.panel = { tension: 200, friction: 20 };
 
-const StyledContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #ffe1ff;
-`;
 
 const Sidebar = Keyframes.Spring({
   open: { to: { x: 0 }, config: config.default },
   close: async (call) => {
-    await delay(400);
+    await delay(300);
     await call({ to: { x: -100 }, config: config.gentle });
   },
 });
 
 const Content = Keyframes.Trail({
   open: {
-    delay: 100,
     from: { x: -100, opacity: 0 },
     to: { x: 0, opacity: 1 },
-    config: config.default,
   },
   close: {
-    delay: 25,
     to: { x: -100, opacity: 0 },
   },
 });
 
 const formItems = [
-  <Avatar src="https://semantic-ui.com/images/avatar2/large/elyse.png" />,
-  <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />,
-  <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />,
+  <SC.Avatar src="https://semantic-ui.com/images/avatar2/large/matthew.png" />,
+  <SC.Input prefix={<SC.Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />,
+  <SC.Input
+    prefix={<SC.Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+    type="password"
+    placeholder="Password"
+  />,
   <React.Fragment>
-    <Checkbox>Remember me</Checkbox>
-    <a className="login-form-forgot" href="#">Forgot password</a>
-    <Button type="primary" htmlType="submit" className="login-form-button">Log in</Button>
-    Or <a href="#">register now!</a>
+    <SC.Checkbox>Remember me</SC.Checkbox>
+    <SC.LoginFormForgot>Forgot password</SC.LoginFormForgot>
+  </React.Fragment>,
+  <React.Fragment>
+    <SC.LoginFormButton>Log in</SC.LoginFormButton>
+  </React.Fragment>,
+  <React.Fragment>
+    Or <a>register now!</a>
   </React.Fragment>,
 ];
 
@@ -62,15 +62,23 @@ class Panel extends React.Component {
 
   render() {
     const { open } = this.state;
-    const state = open ? 'open' : 'false';
+    const state = open ? 'open' : 'close';
+
+    const toogleIcons = {
+      open: style => <SC.ToggleIcon style={{ ...style }} type="menu-fold" onClick={this.toggle} />,
+      close: style => <SC.ToggleIcon style={{ ...style }} type="menu-unfold" onClick={this.toggle} />,
+    };
+
     return (
-      <StyledContainer onClick={this.toggle}>
-        <button onClick={this.toggle}>ICON</button>
+      <SC.Container>
+        <Transition from={{ opacity: 0 }} enter={{ opacity: 1 }} leave={{ opacity: 0 }}>
+          {toogleIcons[state]}
+        </Transition>
         <Sidebar native state={state}>
           {({ x }) => (
-            <animated.div
-              styled={{
-                'will-change': 'transform',
+            <SC.SidebarContent
+              style={{
+                willChange: 'transform',
                 transform: x.interpolate(x => `translate3d(${x}%,0,0)`),
               }}
             >
@@ -82,14 +90,14 @@ class Panel extends React.Component {
                       ...props,
                     }}
                   >
-                    <Form.Item className={i === 0 ? 'middle' : ''}>{item}</Form.Item>
+                    <SC.FormItem middle={i === 0}>{item}</SC.FormItem>
                   </animated.div>
                 ))}
               </Content>
-            </animated.div>
+            </SC.SidebarContent>
           )}
         </Sidebar>
-      </StyledContainer>
+      </SC.Container>
     );
   }
 }

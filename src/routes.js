@@ -4,6 +4,7 @@ import Patterns from './components/Animations/Patterns';
 import Interpolate from './components/Animations/Interpolate';
 import Trail from './components/Animations/Trail';
 import Bounce from './components/Animations/Bounce';
+import Panel from './components/Animations/Panel';
 
 const routes = [
   {
@@ -41,6 +42,12 @@ const routes = [
     title: 'Patterns',
     color: '#933EC5', // ff9861
     component: Patterns,
+  },
+  {
+    path: '/panel',
+    title: 'Panel',
+    color: '#ff6924',
+    component: Panel,
   },
 ];
 
