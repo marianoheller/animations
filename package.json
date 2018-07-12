@@ -1,5 +1,6 @@
 {
   "name": "animations",
+  "homepage": "https://marianoheller.github.io/animations",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,7 +13,6 @@
     "@vx/shape": "^0.0.168",
     "antd": "^3.6.6",
     "d3-array": "^1.2.1",
-    "delay": "^3.0.0",
     "flubber": "^0.4.2",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
@@ -28,7 +28,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.5",
@@ -36,6 +38,7 @@
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.10.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0"
+    "eslint-plugin-react": "^7.7.0",
+    "gh-pages": "^1.2.0"
   }
 }

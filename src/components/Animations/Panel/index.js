@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Keyframes, Transition, animated, config } from 'react-spring';
-import delay from 'delay';
+import delay from '../../../delay';
 
 import * as SC from './StyledComponents';
 
