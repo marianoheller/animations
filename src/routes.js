@@ -34,7 +34,7 @@ const routes = [
   {
     path: '/bounce',
     title: 'Bounce',
-    color: '#ffff76',
+    color: '#6017ff',
     component: Bounce,
   },
   {
