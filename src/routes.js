@@ -1,8 +1,8 @@
 import Tides from './components/Animations/Tides';
 import Vickatint from './components/Animations/Vickatint';
-import Patterns from './components/Animations/Patterns';
+import Heart from './components/Animations/Heart';
 import Interpolate from './components/Animations/Interpolate';
-import Trail from './components/Animations/Trail';
+/* import Trail from './components/Animations/Trail'; */
 import Bounce from './components/Animations/Bounce';
 import Panel from './components/Animations/Panel';
 
@@ -25,12 +25,12 @@ const routes = [
     color: '#ffff76',
     component: Interpolate,
   },
-  {
+  /* {
     path: '/trail',
     title: 'Trail',
     color: '#ffff76',
     component: Trail,
-  },
+  }, */
   {
     path: '/bounce',
     title: 'Bounce',
@@ -38,10 +38,10 @@ const routes = [
     component: Bounce,
   },
   {
-    path: '/patterns',
-    title: 'Patterns',
-    color: '#933EC5', // ff9861
-    component: Patterns,
+    path: '/heart',
+    title: 'Heart',
+    color: '#1757e2',
+    component: Heart,
   },
   {
     path: '/panel',
