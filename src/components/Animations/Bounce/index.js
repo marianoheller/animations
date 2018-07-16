@@ -1,4 +1,5 @@
 /* eslint-disable no-shadow */
+/* eslint-disable no-constant-condition */
 import React from 'react';
 import styled from 'styled-components';
 import { scaleLinear } from '@vx/scale';
@@ -6,7 +7,6 @@ import { ParentSize } from '@vx/responsive';
 import { Spring, Keyframes, animated } from 'react-spring';
 import { TimingAnimation, Easing } from 'react-spring/dist/addons.cjs';
 
-const MAX_HEIGHT = 300;
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -15,22 +15,37 @@ const StyledContainer = styled.div`
   cursor: pointer;
 `;
 
-const animationScript = async (next) => {
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    await next(Spring, {
-      from: { ballHeight: 300, ry: 50, rx: 50 },
-      to: { ballHeight: 0, ry: 45, rx: 55 },
-    });
-    await next(Spring, {
-      // from: { ballHeight: 0, ry: 50, rx: 50 },
-      to: { ballHeight: 300, ry: 50, rx: 50 },
-      config: {
-        tension: 200,
-        friction: 25,
-        velocity: 100,
-      },
-    });
+const animationScript = (state, sizeProps) => {
+  switch (state) {
+    case 'drop':
+      return async (next) => {
+        console.log('THIS RUNS ONLY ONCE');
+        while (true) {
+          await next(Spring, {
+            from: { ballHeight: sizeProps.height / 2 },
+            to: { ballHeight: 0 },
+          });
+          await next(Spring, {
+            to: { ballHeight: sizeProps.height / 2 },
+            config: {
+              tension: 200,
+              friction: 25,
+              velocity: 100,
+            },
+          });
+        }
+      };
+    case 'toTop': {
+      console.log('THIS RUNS');
+      return async (next) => {
+        console.log("WHY THIS DOESN'T RUN!! :(");
+        await next(Spring, {
+          to: { ballHeight: 0 },
+        });
+      };
+    }
+    default:
+      return null;
   }
 };
 
@@ -63,8 +78,8 @@ const Ball = ({ ballHeight, height, width }) => {
   return (
     <svg height={height} width={width}>
       <animated.ellipse
-        cx="200"
-        cy="200"
+        cx={`${width / 2}`}
+        cy={`${(3 + height) / 4}`}
         rx={ballHeight.interpolate(() => `${rxScale(deriv(heightHistory))}`)}
         ry={ballHeight.interpolate(() => `${ryScale(deriv(heightHistory))}`)}
         fill="#247BA0"
@@ -72,7 +87,7 @@ const Ball = ({ ballHeight, height, width }) => {
         strokeWidth="2px"
         style={{
           willChange: 'transform',
-          transform: ballHeight.interpolate(bH => `translate3d(0, ${MAX_HEIGHT - bH}px, 0)`),
+          transform: ballHeight.interpolate(bH => `translate3d(0, ${(height / 2) - bH}px, 0)`),
         }}
       />
     </svg>
@@ -90,7 +105,7 @@ class Bounce extends React.PureComponent {
 
   toggle() {
     const { aState } = this.state;
-    const possibleStates = ['topAndDrop', 'drop'];
+    const possibleStates = ['toTop', 'drop'];
     const currentIndex = possibleStates.findIndex(p => p === aState);
     const nextAState = possibleStates[(currentIndex + 1) % possibleStates.length];
     this.setState({ aState: nextAState });
@@ -101,18 +116,25 @@ class Bounce extends React.PureComponent {
     return (
       <StyledContainer onClick={this.toggle}>
         <ParentSize >
-          {sizeProps => (
-            <Keyframes
-              state={aState}
-              reset
-              native
-              impl={TimingAnimation}
-              config={{ duration: 2500, easing: Easing.bounce }}
-              script={animationScript}
-            >
-              {keyframesProps => <Ball {...sizeProps} {...keyframesProps} />}
-            </Keyframes>
-          )}
+          {(sizeProps) => {
+            if (sizeProps.height === 0 || sizeProps.width === 0) {
+              /* eslint-disable no-param-reassign */
+              sizeProps.height = window.innerHeight;
+              sizeProps.width = window.innerWidth;
+              /* eslint-enable no-param-reassign */
+            }
+            return (
+              <Keyframes
+                reset
+                native
+                impl={TimingAnimation}
+                config={{ duration: 2500, easing: Easing.bounce }}
+                script={animationScript(aState, sizeProps)}
+              >
+                {keyframesProps => <Ball {...sizeProps} {...keyframesProps} />}
+              </Keyframes>
+            );
+          }}
         </ParentSize>
       </StyledContainer>
     );
