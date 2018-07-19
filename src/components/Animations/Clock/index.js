@@ -84,7 +84,8 @@ const Svg = ({
 
         style={{
           willChange: 'transform',
-          transform: seconds.interpolate(s => `rotate(${(s * 6) + iniDeg.seconds}deg)`),
+          // TODO: Make it floor every second, not every degree
+          transform: seconds.interpolate(s => `rotate(${Math.floor((s * 6) + iniDeg.seconds)}deg)`),
           transformOrigin: `${width / 2}px ${height / 2}px`,
         }}
       />
