@@ -88,18 +88,6 @@ class Bounce extends React.PureComponent {
     this.toggle = this.toggle.bind(this);
   }
 
-  /* eslint-disable */
-  toggle() {
-    // Disabled toogle.
-    // TODO: fix this
-    /* const { aState } = this.state;
-    const possibleStates = ['toTop', 'drop'];
-    const currentIndex = possibleStates.findIndex(p => p === aState);
-    const nextAState = possibleStates[(currentIndex + 1) % possibleStates.length];
-    this.setState({ aState: nextAState }); */
-  }
-  /* eslint-enable */
-
   render() {
     return (
       <StyledContainer onClick={this.toggle}>
