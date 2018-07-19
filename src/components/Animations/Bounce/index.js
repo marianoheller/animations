@@ -27,11 +27,11 @@ const animationScript = (state) => {
             to: { ballHeight: 0 },
           });
           await next(Spring, {
+            from: { ballHeight: 0 },
             to: { ballHeight: 1 },
             config: {
               tension: 200,
-              friction: 25,
-              velocity: 100,
+              friction: 10,
             },
           });
         }
@@ -146,7 +146,7 @@ class Bounce extends React.PureComponent {
                 native
                 impl={TimingAnimation}
                 config={{ duration: 2500, easing: Easing.bounce }}
-                script={animationScript(aState, sizeProps)}
+                script={animationScript(aState)}
               >
                 {keyframesProps => <Ball {...sizeProps} {...keyframesProps} />}
               </Keyframes>
