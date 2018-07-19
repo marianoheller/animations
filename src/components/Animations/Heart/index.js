@@ -3,18 +3,18 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import styled from 'styled-components';
-import { Keyframes, Spring, animated } from 'react-spring';
+import { Keyframes, animated } from 'react-spring';
 import { ParentSize } from '@vx/responsive';
 import { TimingAnimation, Easing } from 'react-spring/dist/addons.cjs';
 
 const strokeColor = '#B8B8B8';
 const heartColor = '#E21737';
 
-const animationScript = sizeProps => async (next) => {
+const animationFrames = sizeProps => Keyframes.Spring(async (next) => {
   const squareSide = sizeProps.height / 5;
   while (true) {
     // Draw square
-    await next(Spring, {
+    await next({
       from: {
         squareDashOffset: 4 * squareSide,
         circleDashOffset: Math.PI * squareSide,
@@ -28,17 +28,17 @@ const animationScript = sizeProps => async (next) => {
       to: { squareDashOffset: 0 },
     });
     // Draw circles
-    await next(Spring, {
+    await next({
       from: { circleDashOffset: Math.PI * squareSide },
       to: { circleDashOffset: 0 },
     });
     // Move circles circles
-    await next(Spring, {
+    await next({
       from: { circleTrans: 0 },
       to: { circleTrans: squareSide / 2 },
     });
     // Rotate group
-    await next(Spring, {
+    await next({
       from: { groupAngle: 0, heartOpacity: 0 },
       to: { groupAngle: 45, heartOpacity: 1 },
       config: {
@@ -47,32 +47,32 @@ const animationScript = sizeProps => async (next) => {
       },
     });
     // Draw heart
-    await next(Spring, {
+    await next({
       from: { opacityFrame: 1, heartDashOffset: (Math.PI * squareSide) + (2 * squareSide) },
       to: { opacityFrame: 0, heartDashOffset: 0 },
     });
     // Colour heart
-    await next(Spring, {
+    await next({
       from: { heartTransparency: 0 },
       to: { heartTransparency: 1 },
     });
     // Fade out heart partially
-    await next(Spring, {
+    await next({
       from: { heartOpacity: 1 },
       to: { heartOpacity: 0.6 },
     });
     // Fade in heart
-    await next(Spring, {
+    await next({
       from: { heartOpacity: 0.6 },
       to: { heartOpacity: 1 },
     });
     // Fade out heart partially
-    await next(Spring, {
+    await next({
       from: { heartOpacity: 1 },
       to: { heartOpacity: 0 },
     });
   }
-};
+});
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -191,16 +191,16 @@ class Heart extends React.PureComponent {
               sizeProps.width = window.innerWidth;
               /* eslint-enable no-param-reassign */
             }
+            const AnimationContainer = animationFrames(sizeProps);
             return (
-              <Keyframes
+              <AnimationContainer
                 reset
                 native
                 impl={TimingAnimation}
                 config={{ duration: 1200, easing: Easing.linear }}
-                script={animationScript(sizeProps)}
               >
                 {keyframesProps => <Svg {...sizeProps} {...keyframesProps} />}
-              </Keyframes>
+              </AnimationContainer>
             );
           }}
         </ParentSize>
