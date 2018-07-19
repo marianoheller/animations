@@ -17,17 +17,17 @@ const StyledContainer = styled.div`
   /* cursor: pointer; */
 `;
 
-const animationScript = (state, sizeProps) => {
+const animationScript = (state) => {
   switch (state) {
     case 'drop':
       return async (next) => {
         while (true) {
           await next(Spring, {
-            from: { ballHeight: sizeProps.height / 2 },
+            from: { ballHeight: 1 },
             to: { ballHeight: 0 },
           });
           await next(Spring, {
-            to: { ballHeight: sizeProps.height / 2 },
+            to: { ballHeight: 1 },
             config: {
               tension: 200,
               friction: 25,
@@ -37,6 +37,7 @@ const animationScript = (state, sizeProps) => {
         }
       };
     case 'toTop': {
+      // TODO fix
       console.log('THIS RUNS WHEN CHANGING STATE');
       return async (next) => {
         console.log("WHY THIS DOESN'T RUN!! :(");
@@ -51,7 +52,7 @@ const animationScript = (state, sizeProps) => {
 };
 
 
-const heightHistory = [window.innerHeight / 2, window.innerHeight / 2];
+const heightHistory = [1, 1];
 const derivHistory = [0, 0];
 const deriv = (heights) => {
   const diff = heights[heights.length - 1] - heights[0];
@@ -61,12 +62,12 @@ const deriv = (heights) => {
 };
 
 const rxScale = scaleLinear({
-  domain: [-15, 15],
+  domain: [-0.08, 0.08],
   range: [35, 65],
   clamp: true,
 });
 const ryScale = scaleLinear({
-  domain: [-15, 15],
+  domain: [-0.08, 0.08],
   range: [65, 35],
   clamp: true,
 });
@@ -77,6 +78,7 @@ const Ball = ({ ballHeight, height, width }) => {
     heightHistory.push(e.value);
     if (heightHistory.length > 2) heightHistory.shift();
   });
+  const maxHeight = height / 2;
   return (
     <svg height={height} width={width}>
       <animated.ellipse
@@ -89,7 +91,7 @@ const Ball = ({ ballHeight, height, width }) => {
         strokeWidth="2px"
         style={{
           willChange: 'transform',
-          transform: ballHeight.interpolate(bH => `translate3d(0, ${(height / 2) - bH}px, 0)`),
+          transform: ballHeight.interpolate(bH => `translate3d(0, ${(1 - bH) * maxHeight}px, 0)`),
         }}
       />
     </svg>
@@ -103,6 +105,15 @@ class Bounce extends React.PureComponent {
       aState: 'drop',
     };
     this.toggle = this.toggle.bind(this);
+  }
+
+  componentWillUnmount() {
+    heightHistory.splice(0);
+    heightHistory.push(1);
+    heightHistory.push(1);
+    derivHistory.splice(0);
+    derivHistory.push(0);
+    derivHistory.push(0);
   }
 
   /* eslint-disable */
