@@ -83,11 +83,6 @@ const Ball = ({ ballHeight, height, width }) => {
 };
 
 class Bounce extends React.PureComponent {
-  constructor() {
-    super();
-    this.toggle = this.toggle.bind(this);
-  }
-
   render() {
     return (
       <StyledContainer onClick={this.toggle}>
