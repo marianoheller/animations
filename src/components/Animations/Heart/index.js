@@ -10,18 +10,17 @@ import { TimingAnimation, Easing } from 'react-spring/dist/addons.cjs';
 const strokeColor = '#B8B8B8';
 const heartColor = '#E21737';
 
-const animationFrames = sizeProps => Keyframes.Spring(async (next) => {
-  const squareSide = sizeProps.height / 5;
+const AnimationContainer = Keyframes.Spring(async (next) => {
   while (true) {
     // Draw square
     await next({
       from: {
-        squareDashOffset: 4 * squareSide,
-        circleDashOffset: Math.PI * squareSide,
+        squareDashOffset: 1,
+        circleDashOffset: 1,
         circleTrans: 0,
         groupAngle: 0,
         opacityFrame: 1,
-        heartDashOffset: (Math.PI * squareSide) + (2 * squareSide),
+        heartDashOffset: 1,
         heartTransparency: 0,
         heartOpacity: 0,
       },
@@ -29,13 +28,13 @@ const animationFrames = sizeProps => Keyframes.Spring(async (next) => {
     });
     // Draw circles
     await next({
-      from: { circleDashOffset: Math.PI * squareSide },
+      from: { circleDashOffset: 1 },
       to: { circleDashOffset: 0 },
     });
     // Move circles circles
     await next({
       from: { circleTrans: 0 },
-      to: { circleTrans: squareSide / 2 },
+      to: { circleTrans: 1 },
     });
     // Rotate group
     await next({
@@ -48,7 +47,7 @@ const animationFrames = sizeProps => Keyframes.Spring(async (next) => {
     });
     // Draw heart
     await next({
-      from: { opacityFrame: 1, heartDashOffset: (Math.PI * squareSide) + (2 * squareSide) },
+      from: { opacityFrame: 1, heartDashOffset: 1 },
       to: { opacityFrame: 0, heartDashOffset: 0 },
     });
     // Colour heart
@@ -113,7 +112,7 @@ const Svg = ({
         style={{
           stroke: strokeColor,
           strokeDasharray: `${4 * squareSide}`,
-          strokeDashoffset: squareDashOffset.interpolate(o => o),
+          strokeDashoffset: squareDashOffset.interpolate(o => o * 4 * squareSide),
           opacity: opacityFrame.interpolate(o => o),
         }}
       />
@@ -126,9 +125,9 @@ const Svg = ({
         style={{
           stroke: strokeColor,
           strokeDasharray: `${Math.PI * squareSide}`,
-          strokeDashoffset: circleDashOffset.interpolate(o => o),
+          strokeDashoffset: circleDashOffset.interpolate(o => o * Math.PI * squareSide),
           willChange: 'transform',
-          transform: circleTrans.interpolate(d => `translate(0,-${d}px)`),
+          transform: circleTrans.interpolate(d => `translate(0,-${d * (squareSide / 2)}px)`),
           opacity: opacityFrame.interpolate(o => o),
         }}
       />
@@ -141,9 +140,9 @@ const Svg = ({
         style={{
           stroke: strokeColor,
           strokeDasharray: `${Math.PI * squareSide}`,
-          strokeDashoffset: circleDashOffset.interpolate(o => o),
+          strokeDashoffset: circleDashOffset.interpolate(o => o * Math.PI * squareSide),
           willChange: 'transform',
-          transform: circleTrans.interpolate(d => `translate(${d}px,0)`),
+          transform: circleTrans.interpolate(d => `translate(${d * (squareSide / 2)}px,0)`),
           opacity: opacityFrame.interpolate(o => o),
         }}
       />
@@ -165,7 +164,7 @@ const Svg = ({
         style={{
           stroke: heartColor,
           strokeDasharray: `${(Math.PI * squareSide) + (2 * squareSide)}`,
-          strokeDashoffset: heartDashOffset.interpolate(o => o),
+          strokeDashoffset: heartDashOffset.interpolate(o => o * ((Math.PI * squareSide) + (2 * squareSide))),
           fill: heartTransparency.interpolate(t => `rgba(226, 23, 55, ${t})`),
           opacity: heartOpacity.interpolate(o => o),
         }}
@@ -184,25 +183,16 @@ class Heart extends React.PureComponent {
     return (
       <StyledContainer>
         <ParentSize >
-          {(sizeProps) => {
-            if (sizeProps.height === 0 || sizeProps.width === 0) {
-              /* eslint-disable no-param-reassign */
-              sizeProps.height = window.innerHeight;
-              sizeProps.width = window.innerWidth;
-              /* eslint-enable no-param-reassign */
-            }
-            const AnimationContainer = animationFrames(sizeProps);
-            return (
-              <AnimationContainer
-                reset
-                native
-                impl={TimingAnimation}
-                config={{ duration: 1200, easing: Easing.linear }}
-              >
-                {keyframesProps => <Svg {...sizeProps} {...keyframesProps} />}
-              </AnimationContainer>
-            );
-          }}
+          {sizeProps => (
+            <AnimationContainer
+              reset
+              native
+              impl={TimingAnimation}
+              config={{ duration: 1200, easing: Easing.linear }}
+            >
+              {keyframesProps => <Svg {...sizeProps} {...keyframesProps} />}
+            </AnimationContainer>
+          )}
         </ParentSize>
       </StyledContainer>
     );
