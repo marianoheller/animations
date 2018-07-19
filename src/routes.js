@@ -2,11 +2,17 @@ import Tides from './components/Animations/Tides';
 import Vickatint from './components/Animations/Vickatint';
 import Heart from './components/Animations/Heart';
 import Interpolate from './components/Animations/Interpolate';
-/* import Trail from './components/Animations/Trail'; */
+import Clock from './components/Animations/Clock';
 import Bounce from './components/Animations/Bounce';
 import Panel from './components/Animations/Panel';
 
 const routes = [
+  {
+    path: '/clock',
+    title: 'Clock',
+    color: '#ff6924',
+    component: Clock,
+  },
   {
     path: '/tides',
     title: 'Tides',
