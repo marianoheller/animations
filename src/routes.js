@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/clock',
     title: 'Clock',
-    color: '#ff6924',
+    color: '#f3ff44',
     component: Clock,
   },
   {

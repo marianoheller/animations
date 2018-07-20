@@ -8,6 +8,11 @@ import { ParentSize } from '@vx/responsive';
 import { TimingAnimation, Easing } from 'react-spring/dist/addons.cjs';
 
 
+const colors = {
+  primary: '#5044ff',
+  secondary: '#ffa844',
+};
+
 const calcInitialDegrees = () => {
   const now = new Date();
   return {
@@ -17,18 +22,25 @@ const calcInitialDegrees = () => {
   };
 };
 
-/*
-const calcTickLines = (i, cx, cy, rStart, rEnd) => {
-  const degs = (360 / 12) * i;
-  const x1 = Math.sin(degs);
+
+const calcTickLines = (i, cx, cy, r) => {
+  const rads = (((2 * Math.PI) / 12) * i);
+  const tickLen = 0.15 * r;
+  const hHyp = r * 0.95;
+  const lHyp = hHyp - tickLen;
   return {
-    x1: 1,
-    y1: 1,
-    x2: 2,
-    y2: 2,
+    x1: (Math.cos(rads) * lHyp) + cx,
+    y1: (Math.sin(rads) * lHyp) + cy,
+    x2: (Math.cos(rads) * hHyp) + cx,
+    y2: (Math.sin(rads) * hHyp) + cy,
   };
 };
- */
+
+
+const calcTickInterval = (deg) => {
+  const coef = Math.floor(deg / 6);
+  return coef * 6;
+};
 
 const AnimationContainer = Keyframes.Spring(async (next) => {
   while (true) {
@@ -45,6 +57,7 @@ const StyledContainer = styled.div`
   width: 100%;
   height: 100%;
   background-color: #FFFFFF;
+  background: ${() => `linear-gradient(90deg, ${colors.primary} 50%, ${colors.secondary} 50%)`};
 `;
 
 
@@ -67,25 +80,67 @@ const Svg = ({
       length: 60,
       width: 4,
     },
+    innerCircle: {
+      r: 120,
+      color: colors.primary,
+    },
+    outerCircle: {
+      r: 140,
+      color: colors.secondary,
+    },
   };
   return (
     <svg
       width={width}
       height={height}
     >
+      {/* Outer circle */}
+      <circle
+        cx={width / 2}
+        cy={height / 2}
+        r={opts.outerCircle.r}
+        stroke={opts.outerCircle.color}
+        fill={opts.outerCircle.color}
+        strokeWidth={opts.hours.width}
+      />
+      {/* Inner circle */}
+      <circle
+        cx={width / 2}
+        cy={height / 2}
+        r={opts.innerCircle.r}
+        stroke={opts.innerCircle.color}
+        fill={opts.innerCircle.color}
+        strokeWidth={opts.hours.width}
+      />
+      {/* Ticks */}
+      {Array(12).fill(0).map((e, i) => {
+        const c = calcTickLines(i, width / 2, height / 2, opts.innerCircle.r);
+        return (
+          <line
+            key={`lineTick${i}`}
+            x1={c.x1}
+            y1={c.y1}
+            x2={c.x2}
+            y2={c.y2}
+            stroke={colors.secondary}
+            strokeWidth={2}
+          />
+        );
+      })}
       {/* Seconds */}
       <animated.line
         x1={width / 2}
         y1={height / 2}
         x2={width / 2}
         y2={(height / 2) - opts.seconds.length}
-        stroke="black"
+        stroke={colors.secondary}
         strokeWidth={opts.seconds.width}
 
         style={{
           willChange: 'transform',
-          // TODO: Make it floor every second, not every degree
-          transform: seconds.interpolate(s => `rotate(${Math.floor((s * 6) + iniDeg.seconds)}deg)`),
+          // Can be smooth seconds or ticking
+          /* transform: seconds.interpolate(s => `rotate(${Math.floor((s * 6) + iniDeg.seconds)}deg)`), */
+          transform: seconds.interpolate(s => `rotate(${calcTickInterval((s * 6) + iniDeg.seconds)}deg)`),
           transformOrigin: `${width / 2}px ${height / 2}px`,
         }}
       />
@@ -95,7 +150,7 @@ const Svg = ({
         y1={height / 2}
         x2={width / 2}
         y2={(height / 2) - opts.minutes.length}
-        stroke="black"
+        stroke={colors.secondary}
         strokeWidth={opts.minutes.width}
 
         style={{
@@ -110,7 +165,7 @@ const Svg = ({
         y1={height / 2}
         x2={width / 2}
         y2={(height / 2) - opts.hours.length}
-        stroke="black"
+        stroke={colors.secondary}
         strokeWidth={opts.hours.width}
 
         style={{
@@ -119,17 +174,15 @@ const Svg = ({
           transformOrigin: `${width / 2}px ${height / 2}px`,
         }}
       />
-      {/* Ticks */}
-      {Array(12).fill(0).map(() => (
-        <line
-          x1={width / 2}
-          y1={height / 2}
-          x2={width / 2}
-          y2={(height / 2) - opts.hours.length}
-          stroke="black"
-          strokeWidth={opts.hours.width}
-        />
-      ))}
+      {/* Pin */}
+      <circle
+        cx={width / 2}
+        cy={height / 2}
+        r={4}
+        stroke={colors.secondary}
+        strokeWidth={2}
+        fill={colors.primary}
+      />
     </svg>
   );
 };
