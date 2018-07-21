@@ -5,8 +5,15 @@ import Interpolate from './components/Animations/Interpolate';
 import Clock from './components/Animations/Clock';
 import Bounce from './components/Animations/Bounce';
 import Panel from './components/Animations/Panel';
+/* import Sea from './components/Animations/Sea'; */
 
 const routes = [
+  /* {
+    path: '/sea',
+    title: 'Sea',
+    color: '#f3ff44',
+    component: Sea,
+  }, */
   {
     path: '/clock',
     title: 'Clock',
@@ -31,12 +38,6 @@ const routes = [
     color: '#ffff76',
     component: Interpolate,
   },
-  /* {
-    path: '/trail',
-    title: 'Trail',
-    color: '#ffff76',
-    component: Trail,
-  }, */
   {
     path: '/bounce',
     title: 'Bounce',
