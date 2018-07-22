@@ -15,6 +15,12 @@ const routes = [
     component: Clock,
   },
   {
+    path: '/bounce',
+    title: 'Bounce',
+    color: '#6017ff',
+    component: Bounce,
+  },
+  {
     path: '/tides',
     title: 'Tides',
     color: '#ff007b',
@@ -31,12 +37,6 @@ const routes = [
     title: 'Interpolate',
     color: '#ff7700',
     component: Interpolate,
-  },
-  {
-    path: '/bounce',
-    title: 'Bounce',
-    color: '#6017ff',
-    component: Bounce,
   },
   {
     path: '/heart',
