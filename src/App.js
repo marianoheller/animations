@@ -25,6 +25,16 @@ class App extends React.Component {
     this.changeRoute = this.changeRoute.bind(this);
   }
 
+  componentDidUpdate() {
+    const { location } = this.props;
+    const { routeIndex } = this.state;
+    const currentRouteIndex = routes.findIndex(r => r.path === location.pathname);
+    if (routeIndex !== currentRouteIndex) {
+      /* eslint-disable react/no-did-update-set-state */
+      this.setState({ routeIndex: currentRouteIndex });
+    }
+  }
+
   changeRoute(num) {
     // Mod to handle negative numbers
     const mod = (a, n) => ((a % n) + n) % n;

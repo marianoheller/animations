@@ -33,7 +33,7 @@ export default function Showcase() {
       <Title>Animations Showcase</Title>
       <AnimationContainers>
         {routes.map(r => (
-          <Link to={r.path}>
+          <Link key={r.path} to={r.path}>
             <Animation src={`/gifs/${r.title.toLowerCase()}.gif`} />
           </Link>
         ))}
