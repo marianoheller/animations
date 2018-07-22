@@ -8,12 +8,6 @@ import Panel from './components/Animations/Panel';
 /* import Sea from './components/Animations/Sea'; */
 
 const routes = [
-  /* {
-    path: '/sea',
-    title: 'Sea',
-    color: '#f3ff44',
-    component: Sea,
-  }, */
   {
     path: '/clock',
     title: 'Clock',
@@ -23,7 +17,7 @@ const routes = [
   {
     path: '/tides',
     title: 'Tides',
-    color: '#ff6924',
+    color: '#ff007b',
     component: Tides,
   },
   {
@@ -35,7 +29,7 @@ const routes = [
   {
     path: '/interpolate',
     title: 'Interpolate',
-    color: '#ffff76',
+    color: '#ff7700',
     component: Interpolate,
   },
   {

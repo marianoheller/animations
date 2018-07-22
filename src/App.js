@@ -29,7 +29,7 @@ class App extends React.Component {
     const { location } = this.props;
     const { routeIndex } = this.state;
     const currentRouteIndex = routes.findIndex(r => r.path === location.pathname);
-    if (routeIndex !== currentRouteIndex) {
+    if (routeIndex !== currentRouteIndex && currentRouteIndex !== -1) {
       /* eslint-disable react/no-did-update-set-state */
       this.setState({ routeIndex: currentRouteIndex });
     }

@@ -4,7 +4,7 @@ import { curveBasis } from '@vx/curve';
 import { AreaClosed } from '@vx/shape';
 import { scaleTime, scaleLinear } from '@vx/scale';
 import { ParentSize } from '@vx/responsive';
-import { GradientPinkRed } from '@vx/gradient';
+import { LinearGradient } from '@vx/gradient';
 import { genDateValue } from '@vx/mock-data';
 import { extent, max } from 'd3-array';
 import { Spring, config } from 'react-spring';
@@ -16,7 +16,7 @@ const y = d => d.value;
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  background: linear-gradient(#17EAD9, #6078EA);
+  background: linear-gradient(#00ffee, #0325ff);
 `;
 
 const SvgWrapper = styled.div`
@@ -39,8 +39,8 @@ const Graph = ({ interpolate, data, xScale, yScale }) => (
     x={x}
     y={y}
     strokeWidth={2}
-    stroke="url(#PinkRed)"
-    fill="url(#PinkRed)"
+    stroke="url(#linGrad)"
+    fill="url(#linGrad)"
     curve={curveBasis}
   />
 );
@@ -69,7 +69,7 @@ export default class Tides extends Component {
             return (
               <SvgWrapper onClick={this.toggle}>
                 <Svg width={width} height={height} stroke="none" strokeOpacity={0}>
-                  <GradientPinkRed id="PinkRed" />
+                  <LinearGradient id="linGrad" from="#03ff35" to="#fbff00" />
                   <g>
                     <Spring config={config.wobbly} to={{ interpolate }} onRest={this.toggle} {...extra}>
                       {springProps => <Graph {...springProps} />}
