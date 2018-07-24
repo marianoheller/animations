@@ -12,17 +12,21 @@ import { scaleLinear, scaleOrdinal } from '@vx/scale';
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  background: linear-gradient(#ffe1ff, #ff7fe5);
+  background: linear-gradient( to bottom right, #540007, #ffa200);
 `;
 
 const Svg = styled.svg`
   cursor: pointer;
 `;
 
+const StyledPatternWaves = styled(PatternWaves)`
+  stroke-opacity: ${props => props.deepnessIndex * 0.1};
+`;
+
 const range = n => Array.from(Array(n), (d, i) => i);
-const numLayers = 1;
-const samplesPerLayer = 25;
-const bumpsPerLayer = 20;
+const numLayers = 6;
+const samplesPerLayer = 20;
+const bumpsPerLayer = 10;
 
 const keys = range(numLayers);
 
@@ -47,8 +51,14 @@ function bumps(n, m) {
 
 const zScale = scaleOrdinal({
   domain: keys,
-  range: ['#0335ff', '#580040', '#9cfaff', '#bc5399', '#c84653'],
+  range: ['#026bff', '#3103ff', '#1f03db', '#1002ab', '#050175', '#010242'],
 });
+
+const patternScale = scaleOrdinal({
+  domain: keys,
+  range: ['water5', 'water4', 'water3', 'water2', 'water1', 'water0'],
+});
+
 
 /* eslint-disable react/prop-types */
 const Graph = ({
@@ -73,7 +83,7 @@ const Graph = ({
             {tweened => (
               <React.Fragment>
                 <path d={tweened.d} fill={zScale(series.key)} />
-                <path d={tweened.d} fill="url(#water)" />
+                <path d={tweened.d} fill={`url(#${patternScale(series.key)})`} />
               </React.Fragment>
             )}
           </Spring>
@@ -124,13 +134,25 @@ export default class Sea extends React.Component {
               domain: [0, samplesPerLayer - 1],
             });
             const yScale = scaleLinear({
-              range: [height, 0],
-              domain: [-30, 50],
+              range: [height / 3, height],
+              domain: [-10, 10],
+              clamp: true,
             });
             return (
               <Svg width={width} height={height} onClick={this.toggle}>
-                <PatternWaves id="water" height={12} width={12} fill="transparent" stroke="#d0ffff" strokeWidth={1} complement />
-
+                {Array(6).fill(0).map((e, i) => (
+                  <StyledPatternWaves
+                    id={`water${i}`}
+                    height={12}
+                    width={12}
+                    fill="transparent"
+                    stroke="white"
+                    strokeWidth={1}
+                    strokeOpacity={0.1}
+                    complement
+                    deepnessIndex={i}
+                  />
+                ))}
                 <g onClick={() => this.forceUpdate()} onTouchStart={() => this.forceUpdate()}>
                   <Graph data={data} xScale={xScale} yScale={yScale} toggle={this.toggle} />
                 </g>
