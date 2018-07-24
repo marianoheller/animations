@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import styled from 'styled-components';
 import { curveBasis } from '@vx/curve';
@@ -11,14 +12,11 @@ import { scaleLinear, scaleOrdinal } from '@vx/scale';
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #ffe1ff;
+  background: linear-gradient(#ffe1ff, #ff7fe5);
 `;
 
-const SvgWrapper = styled.div`
-  width: 100%;
-  height: 100%;
+const Svg = styled.svg`
   cursor: pointer;
-  overflow: hidden;
 `;
 
 const range = n => Array.from(Array(n), (d, i) => i);
@@ -54,7 +52,7 @@ const zScale = scaleOrdinal({
 
 const patternScale = scaleOrdinal({
   domain: keys,
-  range: ['mustard', 'cherry', 'navy', 'transparent', 'transparent', 'transparent', 'transparent'],
+  range: ['mustard', 'cherry', 'navy', 'transparent', 'transparent'],
 });
 
 /* eslint-disable react/prop-types */
@@ -135,26 +133,16 @@ export default class Vickating extends React.Component {
               domain: [-30, 50],
             });
             return (
-              <SvgWrapper onClick={this.toggle}>
-                <svg width={width} height={height}>
-                  <PatternCircles id="mustard" height={40} width={40} radius={5} fill="#9cfaff" complement />
-                  <PatternWaves
-                    id="cherry"
-                    height={12}
-                    width={12}
-                    fill="transparent"
-                    stroke="#d0ffff"
-                    strokeWidth={1}
-                    complement
-                  />
-                  <PatternCircles id="navy" height={60} width={60} radius={10} fill="white" complement />
-                  <PatternCircles id="transparent" height={60} width={60} radius={10} fill="transparent" complement />
-                  <g onClick={() => this.forceUpdate()} onTouchStart={() => this.forceUpdate()}>
-                    <rect x={0} y={0} width={width} height={height} fill="#ffe1ff" />
-                    <Graph data={data} xScale={xScale} yScale={yScale} toggle={this.toggle} />
-                  </g>
-                </svg>
-              </SvgWrapper>
+              <Svg width={width} height={height} onClick={this.toggle}>
+                <PatternCircles id="mustard" height={40} width={40} radius={5} fill="#9cfaff" complement />
+                <PatternWaves id="cherry" height={12} width={12} fill="transparent" stroke="#d0ffff" strokeWidth={1} complement />
+                <PatternCircles id="navy" height={60} width={60} radius={10} fill="white" complement />
+                <PatternCircles id="transparent" height={60} width={60} radius={10} fill="transparent" complement />
+
+                <g onClick={() => this.forceUpdate()} onTouchStart={() => this.forceUpdate()}>
+                  <Graph data={data} xScale={xScale} yScale={yScale} toggle={this.toggle} />
+                </g>
+              </Svg>
             );
           }}
         </ParentSize>
