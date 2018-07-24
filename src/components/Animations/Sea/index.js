@@ -5,6 +5,7 @@ import { curveBasis } from '@vx/curve';
 import { ParentSize } from '@vx/responsive';
 import { transpose } from 'd3-array';
 import { Spring } from 'react-spring';
+import { TimingAnimation, Easing } from 'react-spring/dist/addons.cjs';
 import { Stack } from '@vx/shape';
 import { PatternWaves } from '@vx/pattern';
 import { scaleLinear, scaleOrdinal } from '@vx/scale';
@@ -81,7 +82,12 @@ const Graph = ({
     render={({ seriesData, path }) => (
       seriesData.map(series => (
         <g key={`series-${series.key}`}>
-          <Spring to={{ d: path(series) }} onRest={toggle}>
+          <Spring
+            to={{ d: path(series) }}
+            onRest={toggle}
+            impl={TimingAnimation}
+            config={{ duration: 2000, easing: Easing.linear }}
+          >
             {tweened => (
               <React.Fragment>
                 <path d={tweened.d} fill={zScale(series.key)} />
