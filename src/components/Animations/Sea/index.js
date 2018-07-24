@@ -52,11 +52,13 @@ function bumps(n, m) {
 const zScale = scaleOrdinal({
   domain: keys,
   range: ['#026bff', '#3103ff', '#1f03db', '#1002ab', '#050175', '#010242'],
+  clamp: true,
 });
 
 const patternScale = scaleOrdinal({
   domain: keys,
   range: ['water5', 'water4', 'water3', 'water2', 'water1', 'water0'],
+  clamp: true,
 });
 
 
@@ -118,7 +120,10 @@ export default class Sea extends React.Component {
   }
 
   render() {
-    const data = transpose(keys.map(() => bumps(samplesPerLayer, bumpsPerLayer)));
+    const data = transpose(keys.map((e, i) => {
+      if (i === keys.length - 1) return Array(samplesPerLayer).fill(10);
+      return bumps(samplesPerLayer, bumpsPerLayer).map(b => b + Math.random());
+    }));
     return (
       <Container>
         <ParentSize>
@@ -135,13 +140,14 @@ export default class Sea extends React.Component {
             });
             const yScale = scaleLinear({
               range: [height / 3, height],
-              domain: [-10, 10],
+              domain: [-8, 9],
               clamp: true,
             });
             return (
               <Svg width={width} height={height} onClick={this.toggle}>
                 {Array(6).fill(0).map((e, i) => (
                   <StyledPatternWaves
+                    key={`water${i}`}
                     id={`water${i}`}
                     height={12}
                     width={12}
