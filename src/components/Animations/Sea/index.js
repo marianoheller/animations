@@ -10,6 +10,8 @@ import { Stack } from '@vx/shape';
 import { PatternWaves } from '@vx/pattern';
 import { scaleLinear, scaleOrdinal } from '@vx/scale';
 
+import Boat from './Boat';
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -26,8 +28,8 @@ const StyledPatternWaves = styled(PatternWaves)`
 
 const range = n => Array.from(Array(n), (d, i) => i);
 const numLayers = 6;
-const samplesPerLayer = 20;
-const bumpsPerLayer = 10;
+const samplesPerLayer = 21;
+const bumpsPerLayer = 5;
 
 const keys = range(numLayers);
 
@@ -63,6 +65,11 @@ const patternScale = scaleOrdinal({
 });
 
 
+const boatSize = {
+  h: 100,
+  w: 100,
+};
+
 /* eslint-disable react/prop-types */
 const Graph = ({
   data,
@@ -80,23 +87,39 @@ const Graph = ({
     y0={d => yScale(d[0])}
     y1={d => yScale(d[1])}
     render={({ seriesData, path }) => (
-      seriesData.map(series => (
-        <g key={`series-${series.key}`}>
-          <Spring
-            to={{ d: path(series) }}
-            onRest={toggle}
-            impl={TimingAnimation}
-            config={{ duration: 2000, easing: Easing.linear }}
-          >
-            {tweened => (
-              <React.Fragment>
-                <path d={tweened.d} fill={zScale(series.key)} />
-                <path d={tweened.d} fill={`url(#${patternScale(series.key)})`} />
-              </React.Fragment>
-            )}
-          </Spring>
-        </g>
-      ))
+      <React.Fragment>
+        {seriesData.map(series => (
+          <g key={`series-${series.key}`}>
+            <Spring
+              to={{
+                d: path(series),
+                b: series[10][0],
+                angle: (Math.random() - 0.5) * 35,
+              }}
+              onRest={toggle}
+              impl={TimingAnimation}
+              config={{ duration: 2000, easing: Easing.inOut(Easing.linear) }}
+            >
+              {({ d, b, angle }) => (
+                <React.Fragment>
+                  { series.key === 1 &&
+                    <Boat
+                      x={xScale(10) - (boatSize.w / 2)}
+                      y={yScale(b) - (boatSize.h * 0.9)}
+                      width={boatSize.w}
+                      height={boatSize.h}
+                      angle={angle}
+                      id="boat"
+                    />
+                  }
+                  <path d={d} fill={zScale(series.key)} />
+                  <path d={d} fill={`url(#${patternScale(series.key)})`} />
+                </React.Fragment>
+              )}
+            </Spring>
+          </g>
+        ))}
+      </React.Fragment>
     )}
   />
 );
@@ -128,7 +151,7 @@ export default class Sea extends React.Component {
   render() {
     const data = transpose(keys.map((e, i) => {
       if (i === keys.length - 1) return Array(samplesPerLayer).fill(10);
-      return bumps(samplesPerLayer, bumpsPerLayer).map(b => b + Math.random());
+      return bumps(samplesPerLayer, bumpsPerLayer).map(b => b + 0.75 + Math.random() + Math.random());
     }));
     return (
       <Container>
