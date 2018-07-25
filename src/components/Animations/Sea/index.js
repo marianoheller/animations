@@ -176,7 +176,7 @@ export default class Sea extends React.Component {
             });
             const yScale = scaleLinear({
               range: [height / 3, height],
-              domain: [-8, 9],
+              domain: [-8, 11],
               clamp: true,
             });
             return (
