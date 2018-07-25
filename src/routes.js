@@ -1,5 +1,5 @@
 import Tides from './components/Animations/Tides';
-import Vickatint from './components/Animations/Vickatint';
+import Candle from './components/Animations/Candle';
 import Heart from './components/Animations/Heart';
 import Interpolate from './components/Animations/Interpolate';
 import Clock from './components/Animations/Clock';
@@ -33,10 +33,10 @@ const routes = [
     component: Tides,
   },
   {
-    path: '/vickatint',
-    title: 'Vickatint',
-    color: '#8e03ff',
-    component: Vickatint,
+    path: '/candle',
+    title: 'Candle',
+    color: '#ffe100',
+    component: Candle,
   },
   {
     path: '/interpolate',
