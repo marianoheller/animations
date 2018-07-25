@@ -6,6 +6,7 @@ export default function boat({
   x,
   y,
   angle,
+  scale,
   ...rest
 }) {
   return (
@@ -19,7 +20,7 @@ export default function boat({
       <g
         style={{
           willChange: 'transform',
-          transform: `rotate(${angle}deg)`,
+          transform: `rotate(${angle}deg) scale(${scale})`,
           transformOrigin: '256px 256px',
         }}
       >

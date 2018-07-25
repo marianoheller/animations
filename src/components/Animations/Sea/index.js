@@ -95,12 +95,18 @@ const Graph = ({
                 d: path(series),
                 b: series[10][0],
                 angle: (Math.random() - 0.5) * 35,
+                scale: 1 + ((Math.random() - 0.5) * 0.2),
               }}
               onRest={toggle}
               impl={TimingAnimation}
               config={{ duration: 2000, easing: Easing.inOut(Easing.linear) }}
             >
-              {({ d, b, angle }) => (
+              {({
+                d,
+                b,
+                angle,
+                scale,
+              }) => (
                 <React.Fragment>
                   { series.key === 1 &&
                     <Boat
@@ -109,6 +115,7 @@ const Graph = ({
                       width={boatSize.w}
                       height={boatSize.h}
                       angle={angle}
+                      scale={scale}
                       id="boat"
                     />
                   }
