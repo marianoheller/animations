@@ -20,9 +20,11 @@ const Svg = styled.svg`
 `;
 
 const range = n => Array.from(Array(n), (d, i) => i);
-const numLayers = 10;
-const samplesPerLayer = 25;
-const bumpsPerLayer = 20;
+const circleInterpolatorFactory = (r, w) => t => Math.sqrt(Math.abs((r ** 2) - ((t - (w / 2)) ** 2)));
+
+const numLayers = 6;
+const samplesPerLayer = 11;
+const bumpsPerLayer = 3;
 
 const keys = range(numLayers);
 
@@ -39,10 +41,15 @@ function bump(a, n) {
   return ret;
 }
 
+/**
+ * @param {*} n Samples per layer
+ * @param {*} m Bumps per layer
+ */
 function bumps(n, m) {
   let a = new Array(n).fill(0);
   for (let i = 0; i < m; ++i) a = bump(a, n);
-  return a;
+  const interpolator = circleInterpolatorFactory(n / 2, n);
+  return [...a.map((e, i) => interpolator(i) * e), interpolator(n)];
 }
 
 const zScale = scaleOrdinal({
@@ -113,6 +120,18 @@ export default class Vickating extends React.Component {
   }
 
   render() {
+    /*
+    const normalizeScale = scaleLinear({
+      domain: [0, 20],
+      range: [0, 1],
+      clamp: true,
+    });
+    const data = transpose(keys.map(() => bumps(samplesPerLayer, bumpsPerLayer).map((e, i) => {
+      const interpolator = circleInterpolatorFactory(0.5, 0.5);
+      const ret = interpolator(normalizeScale(i)) * e;
+      // console.log("INTERP", i, normalizeScale(i), interpolator(normalizeScale(i)));
+      return ret;
+    }))); */
     const data = transpose(keys.map(() => bumps(samplesPerLayer, bumpsPerLayer)));
     return (
       <Container>
@@ -124,13 +143,16 @@ export default class Vickating extends React.Component {
               width = window.innerWidth;
               /* eslint-enable no-param-reassign */
             }
+            const radius = width / 4;
             const xScale = scaleLinear({
-              range: [0, width],
-              domain: [0, samplesPerLayer - 1],
+              domain: [0, samplesPerLayer],
+              range: [radius, 3 * radius],
+              clamp: true,
             });
+
             const yScale = scaleLinear({
-              range: [height, 0],
               domain: [-30, 50],
+              range: [radius, 3 * radius],
             });
             return (
               <Svg width={width} height={height} onClick={this.toggle}>
