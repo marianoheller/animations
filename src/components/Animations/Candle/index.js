@@ -7,6 +7,7 @@ import { transpose } from 'd3-array';
 import { Spring } from 'react-spring';
 import { Stack } from '@vx/shape';
 import { scaleLinear, scaleOrdinal } from '@vx/scale';
+import { TimingAnimation, Easing } from 'react-spring/dist/addons.cjs';
 
 import CandleSvg from './candle';
 
@@ -18,9 +19,6 @@ const Container = styled.div`
 
 const Svg = styled.svg`
   cursor: pointer;
-  @media (max-width: 680px) {
-    height: ${props => `${props.width}`}
-  }
 `;
 
 const range = n => Array.from(Array(n), (d, i) => i);
@@ -82,7 +80,12 @@ const Graph = ({
         <g
           key={`series-${series.key}`}
         >
-          <Spring to={{ d: path(series) }} onRest={toggle}>
+          <Spring
+            to={{ d: path(series) }}
+            onRest={toggle}
+            impl={TimingAnimation}
+            config={{ duration: 1000, easing: Easing.inOut(Easing.linear) }}
+          >
             {tweened => (
               <React.Fragment>
                 <path d={tweened.d} fill={zScale(series.key)} />
@@ -160,12 +163,18 @@ export default class Candle extends React.Component {
                   width={width}
                   height={height}
                   onClick={this.toggle}
-                  style={{
-                    transform: 'rotate(-90deg)',
-                  }}
                 >
-                  <CandleSvg x={-275} />
-                  <g onClick={() => this.forceUpdate()} onTouchStart={() => this.forceUpdate()}>
+                  <CandleSvg
+                    y={275}
+                  />
+                  <g
+                    onClick={() => this.forceUpdate()}
+                    onTouchStart={() => this.forceUpdate()}
+                    style={{
+                      transform: 'rotate(-90deg)',
+                      transformOrigin: `${width / 2}px ${height / 2}px`,
+                    }}
+                  >
                     <Graph data={data} xScale={xScale} yScale={yScale} toggle={this.toggle} />
                   </g>
                 </Svg>

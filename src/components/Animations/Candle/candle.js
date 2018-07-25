@@ -5,7 +5,6 @@ import React from 'react';
 export default ({
   x = 0,
   y = 0,
-  style = {},
   ...rest
 }) => (
   <svg
@@ -14,13 +13,7 @@ export default ({
     viewBox="0 0 512 512"
     {...rest}
   >
-    <g
-      style={{
-        transform: 'rotate(90deg)',
-        transformOrigin: '256px 256px',
-        ...style,
-      }}
-    >
+    <g>
       <rect
         x="239.057"
         y="100.617"
