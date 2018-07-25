@@ -165,7 +165,7 @@ export default class Candle extends React.Component {
                   onClick={this.toggle}
                 >
                   <CandleSvg
-                    y={275}
+                    y={height * 0.35}
                   />
                   <g
                     onClick={() => this.forceUpdate()}
