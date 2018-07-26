@@ -45,16 +45,16 @@ const routes = [
     component: Interpolate,
   },
   {
-    path: '/heart',
-    title: 'Heart',
-    color: '#1757e2',
-    component: Heart,
-  },
-  {
     path: '/panel',
     title: 'Panel',
     color: '#ff6924',
     component: Panel,
+  },
+  {
+    path: '/heart',
+    title: 'Heart',
+    color: '#1757e2',
+    component: Heart,
   },
 ];
 
