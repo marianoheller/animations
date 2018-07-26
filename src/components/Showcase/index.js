@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import routes from '../../routes';
 
 const Container = styled.div`
+  padding-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,18 +19,23 @@ const Container = styled.div`
 const Title = styled.div`
   width: 100%;
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #57014a;
   font-family: 'Galada', cursive;
+
+  @media (max-width: 650px) {
+    font-size: 2rem;
+  }
 `;
 
 const AnimationContainers = styled.div`
-  /* margin: 3rem 25% 0 25%; */
+  margin-top: 6rem;
   max-width: 600px;
   display: grid;
   grid-template-columns: repeat(2, 50%);
 
   @media (max-width: 650px) {
+    margin-top: 2rem;
     max-width: 300px;
     grid-template-columns: repeat(1, 100%);
   }
