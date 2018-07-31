@@ -13,7 +13,7 @@ const Container = styled.div`
   height: 100%;
   overflow: auto;
   padding-bottom: 2rem;
-  background: linear-gradient( #ebd8eb, #ededd9);
+  background: linear-gradient( #EEEEEE, #DDDDDD);
 `;
 
 const Title = styled.div`
@@ -29,10 +29,12 @@ const Title = styled.div`
 `;
 
 const AnimationContainers = styled.div`
-  margin-top: 6rem;
-  max-width: 600px;
+  margin-top: 4rem;
+  max-width: 610px;
+  background-color: rgba(0,0,0,0);
   display: grid;
   grid-template-columns: repeat(2, 50%);
+  grid-gap: 0.5rem;
 
   @media (max-width: 650px) {
     margin-top: 2rem;
@@ -41,17 +43,33 @@ const AnimationContainers = styled.div`
   }
 `;
 
+const AnimationWrapper = styled.div`
+  perspective: 100;
+  background-color: rgba(0,0,0,0);
+  transition: all 1.0s linear;
+  &:hover {
+    transform: rotateX(10deg);
+  }
+`;
+
 const Animation = styled.img`
+  transform-style: preserve-3d;
+  transition: all 0.6s linear;
+  &:hover {
+    filter: brightness(80%);
+  }
 `;
 
 export default function Showcase() {
   return (
     <Container>
-      <Title>Animations Showcase</Title>
+      <Title>Animations</Title>
       <AnimationContainers>
         {routes.map(r => (
           <Link key={r.path} to={r.path}>
-            <Animation src={`gifs/${r.title.toLowerCase()}.gif`} />
+            <AnimationWrapper>
+              <Animation src={`gifs/${r.title.toLowerCase()}.gif`} />
+            </AnimationWrapper>
           </Link>
         ))}
       </AnimationContainers>
